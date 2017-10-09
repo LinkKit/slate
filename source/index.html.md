@@ -124,7 +124,7 @@ Condition | Description
 --------- | -----------
 any | any of child rules may match for condition to be true
 all | all of child rules must match for condition to be true
-facts.header | define a header to match against
+fact.header | define a header to match against
 operator | how to compare fact against value, currently supports: "equals"
 value | string value to compare facts against
 
