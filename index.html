@@ -269,6 +269,54 @@
   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
   -d <span class="s1">'{"url":"https://snaplytics.io"}'</span>
 </code></pre>
+<blockquote>
+<p>The above command returns JSON structured like exactly like GET /links/:id</p>
+
+<p>Example ruleset:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unique-id-1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"conditions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"any"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"fact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"header"</span><span class="p">:</span><span class="w"> </span><span class="s2">"X-Action"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"equals"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"respond"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"respond"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"body"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Hello, Mr. Anderson"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unique-id-2"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"conditions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"any"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"fact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"header"</span><span class="p">:</span><span class="w"> </span><span class="s2">"X-Action"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"equals"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"redirect"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"redirect"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://imgur.com/X17puIB"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
 <p>Create a new link. The simplest form of a link simply contains a <code>url</code> which will be redirected to. Read the Rules section to understand how you can apply advanced redirect or response logic based on headers or other facts.</p>
 <h3 id='http-request'>HTTP Request</h3>
 <p><code>POST https://api.linkkit.io/v1/links</code></p>
@@ -289,7 +337,69 @@
 </tr>
 </tbody></table>
 <h3 id='rules'>Rules</h3>
-<p>Rules let you define a list of conditions resulting in actions.</p>
+<p>Rules are a list of independent sets of conditions. When a rules conditions evaluate to true the rules defined alternative action is executed rather than the default URL redirect.</p>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Opaque id, should be unique to list of rules for this link</td>
+</tr>
+<tr>
+<td>conditions</td>
+<td>A conditions object combining any/all matches against &quot;facts&quot;</td>
+</tr>
+<tr>
+<td>action</td>
+<td>Object defining the action to be executed if rule conditions are met</td>
+</tr>
+<tr>
+<td>action.type</td>
+<td>&quot;redirect&quot;,&quot;respond&quot;</td>
+</tr>
+<tr>
+<td>action.params.url</td>
+<td>url to redirect to when action.type is redirect</td>
+</tr>
+<tr>
+<td>action.params.body</td>
+<td>body to respond with when action.type is respond</td>
+</tr>
+</tbody></table>
+
+<p>Conditions must have a top level <code>any</code> or <code>all</code> item, any amount of <code>any</code>/<code>all</code> items can be nested.</p>
+
+<table><thead>
+<tr>
+<th>Condition</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>any</td>
+<td>any of child rules may match for condition to be true</td>
+</tr>
+<tr>
+<td>all</td>
+<td>all of child rules must match for condition to be true</td>
+</tr>
+<tr>
+<td>facts.header</td>
+<td>define a header to match against</td>
+</tr>
+<tr>
+<td>operator</td>
+<td>how to compare fact against value, currently supports: &quot;equals&quot;</td>
+</tr>
+<tr>
+<td>value</td>
+<td>string value to compare facts against</td>
+</tr>
+</tbody></table>
 <h2 id='get-links-id'>GET /links/:id</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd"</span> <span class="se">\</span>
   -u my_api_key:
 </code></pre>
