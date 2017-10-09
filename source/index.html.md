@@ -43,6 +43,55 @@ curl "https://api.linkkit.io/v1/links" \
   -d '{"url":"https://snaplytics.io"}'
 ```
 
+> The above command returns JSON structured like exactly like GET /links/:id
+
+> Example ruleset:
+
+```json
+[
+  {
+    "id": "unique-id-1",
+    "conditions": {
+      "any": [
+        {
+          "fact": {
+            "header": "X-Action"
+          },
+          "operator": "equals",
+          "value": "respond"
+        }
+      ]
+    },
+    "action": {
+      "type": "respond",
+      "params": {
+        "body": "Hello, Mr. Anderson"
+      }
+    }
+  },
+  {
+    "id": "unique-id-2",
+    "conditions": {
+      "any": [
+        {
+          "fact": {
+            "header": "X-Action"
+          },
+          "operator": "equals",
+          "value": "redirect"
+        }
+      ]
+    },
+    "action": {
+      "type": "redirect",
+      "params": {
+        "url": "https://imgur.com/X17puIB"
+      }
+    }
+  }
+]
+```
+
 Create a new link. The simplest form of a link simply contains a `url` which will be redirected to. Read the Rules section to understand how you can apply advanced redirect or response logic based on headers or other facts.
 
 ### HTTP Request
@@ -58,7 +107,26 @@ rules | Link evaluation rules
 
 ### Rules
 
-Rules let you define a list of conditions resulting in actions.
+Rules are a list of independent sets of conditions. When a rules conditions evaluate to true the rules defined alternative action is executed rather than the default URL redirect.
+
+Property | Description
+-------- | -----------
+id | Opaque id, should be unique to list of rules for this link
+conditions | A conditions object combining any/all matches against "facts"
+action | Object defining the action to be executed if rule conditions are met
+action.type | "redirect","respond"
+action.params.url | url to redirect to when action.type is redirect
+action.params.body | body to respond with when action.type is respond
+
+Conditions must have a top level `any` or `all` item, any amount of `any`/`all` items can be nested.
+
+Condition | Description
+--------- | -----------
+any | any of child rules may match for condition to be true
+all | all of child rules must match for condition to be true
+facts.header | define a header to match against
+operator | how to compare fact against value, currently supports: "equals"
+value | string value to compare facts against
 
 ## GET /links/:id
 
@@ -66,7 +134,6 @@ Rules let you define a list of conditions resulting in actions.
 curl "https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd" \
   -u my_api_key:
 ```
-
 
 > The above command returns JSON structured like this:
 
