@@ -238,6 +238,9 @@
               </ul>
           </li>
           <li>
+            <a href="#rules" class="toc-h1 toc-link" data-title="Rules">Rules</a>
+          </li>
+          <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
           </li>
       </div>
@@ -271,10 +274,84 @@
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like exactly like GET /links/:id</p>
+</blockquote>
 
+<p>Create a new link. The simplest form of a link simply contains a <code>url</code> which will be redirected to. Read the <a href="#rules">Rules section</a> to understand how you can apply advanced redirect or response logic based on headers or other facts.</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>POST https://api.linkkit.io/v1/links</code></p>
+<h3 id='body-parameters'>Body Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>url</td>
+<td>The url to redirect to</td>
+</tr>
+<tr>
+<td>rules</td>
+<td>Link evaluation rules</td>
+</tr>
+</tbody></table>
+<h2 id='get-links-id'>GET /links/:id</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd"</span> <span class="se">\</span>
+  -u my_api_key:
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3953276c-d9d8-47aa-a420-1019efecc5dd"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"short_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a8zD"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"original_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://snaplytics.io"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"redirect_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://l.linkkit.io/a8zD"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"rules"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint retrieves a specific link.</p>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET https://api.linkkit.io/v1/links/:id</code></p>
+<h3 id='url-parameters'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>The id of the link to retrieve</td>
+</tr>
+</tbody></table>
+<h2 id='delete-links-id'>DELETE /links/:id</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd"</span> <span class="se">\</span>
+  -X DELETE <span class="se">\</span>
+  -u my_api_key:
+</code></pre>
+<p>This endpoint deletes a specified link.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>DELETE https://api.linkkit.io/v1/links/:id</code></p>
+<h3 id='url-parameters-2'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>The id of the link to delete</td>
+</tr>
+</tbody></table>
+<h1 id='rules'>Rules</h1>
+<blockquote>
 <p>Example ruleset:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="err">/*</span><span class="w">
+    </span><span class="err">Define</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">rule</span><span class="w"> </span><span class="err">that</span><span class="w"> </span><span class="err">makes</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">link</span><span class="w"> </span><span class="err">respond</span><span class="w"> </span><span class="err">with</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">string</span><span class="w">
+    </span><span class="err">when</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">X-Action</span><span class="p">:</span><span class="w"> </span><span class="err">respond</span><span class="w"> </span><span class="err">header</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">included</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">request</span><span class="w">
+  </span><span class="err">*/</span><span class="w">
   </span><span class="p">{</span><span class="w">
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unique-id-1"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"conditions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -295,16 +372,25 @@
       </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">},</span><span class="w">
+  </span><span class="err">/*</span><span class="w">
+    </span><span class="err">Define</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">rule</span><span class="w"> </span><span class="err">that</span><span class="w"> </span><span class="err">makes</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">link</span><span class="w"> </span><span class="err">redirect</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">an</span><span class="w"> </span><span class="err">alternative</span><span class="w"> </span><span class="err">url</span><span class="w">
+    </span><span class="err">if</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">X-Action</span><span class="p">:</span><span class="w"> </span><span class="err">redirect</span><span class="w"> </span><span class="err">header</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">included</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">POST</span><span class="w"> </span><span class="err">request</span><span class="w">
+  </span><span class="err">*/</span><span class="w">
   </span><span class="p">{</span><span class="w">
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unique-id-2"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"conditions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"any"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"all"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
         </span><span class="p">{</span><span class="w">
           </span><span class="s2">"fact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"header"</span><span class="p">:</span><span class="w"> </span><span class="s2">"X-Action"</span><span class="w">
           </span><span class="p">},</span><span class="w">
           </span><span class="s2">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"equals"</span><span class="p">,</span><span class="w">
           </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"redirect"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"fact"</span><span class="p">:</span><span class="w"> </span><span class="s2">"method"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"equals"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"POST"</span><span class="w">
         </span><span class="p">}</span><span class="w">
       </span><span class="p">]</span><span class="w">
     </span><span class="p">},</span><span class="w">
@@ -315,28 +401,9 @@
       </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
+  </span><span class="err">/*</span><span class="w"> </span><span class="err">If</span><span class="w"> </span><span class="err">no</span><span class="w"> </span><span class="err">rules</span><span class="w"> </span><span class="err">are</span><span class="w"> </span><span class="err">matches</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">default</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">link</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">redirect</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">default</span><span class="w"> </span><span class="err">url</span><span class="w"> </span><span class="err">*/</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
-<p>Create a new link. The simplest form of a link simply contains a <code>url</code> which will be redirected to. Read the Rules section to understand how you can apply advanced redirect or response logic based on headers or other facts.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>POST https://api.linkkit.io/v1/links</code></p>
-<h3 id='body-parameters'>Body Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>url</td>
-<td>The url to redirect to</td>
-</tr>
-<tr>
-<td>rules</td>
-<td>Link evaluation rules</td>
-</tr>
-</tbody></table>
-<h3 id='rules'>Rules</h3>
 <p>Rules are a list of independent sets of conditions. When a rules conditions evaluate to true the rules defined alternative action is executed rather than the default URL redirect.</p>
 
 <table><thead>
@@ -388,6 +455,10 @@
 <td>all of child rules must match for condition to be true</td>
 </tr>
 <tr>
+<td>fact</td>
+<td>object containing header key or another fact like &quot;method&quot;</td>
+</tr>
+<tr>
 <td>fact.header</td>
 <td>define a header to match against</td>
 </tr>
@@ -398,54 +469,6 @@
 <tr>
 <td>value</td>
 <td>string value to compare facts against</td>
-</tr>
-</tbody></table>
-<h2 id='get-links-id'>GET /links/:id</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd"</span> <span class="se">\</span>
-  -u my_api_key:
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3953276c-d9d8-47aa-a420-1019efecc5dd"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"short_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a8zD"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"original_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://snaplytics.io"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"redirect_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://l.linkkit.io/a8zD"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"rules"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves a specific link.</p>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET https://api.linkkit.io/v1/links/:id</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>The id of the link to retrieve</td>
-</tr>
-</tbody></table>
-<h2 id='delete-links-id'>DELETE /links/:id</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd"</span> <span class="se">\</span>
-  -X DELETE <span class="se">\</span>
-  -u my_api_key:
-</code></pre>
-<p>This endpoint deletes a specified link.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>DELETE https://api.linkkit.io/v1/links/:id</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>The id of the link to delete</td>
 </tr>
 </tbody></table>
 <h1 id='errors'>Errors</h1>
