@@ -90,6 +90,120 @@ Parameter | Description
 --------- | -----------
 id | The id of the link to retrieve
 
+## GET /links/:id/stats
+
+```shell
+curl "https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd/stats" \
+  -u my_api_key:
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "total_visitor_count": 2317238,
+  "unique_visitor_count_by_remote_ip": 151282
+}
+```
+
+This endpoint retrieves stats for a specific link.
+
+### HTTP Request
+
+`GET https://api.linkkit.io/v1/links/:id/stats`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+id | The id of the link
+
+## GET /links/:id/visitors
+
+```shell
+curl "https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd/visitors" \
+  -u my_api_key:
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "data": [
+    {
+      /*
+        Visitor that triggered default action,
+        notice no matched_rule_id
+      */
+      "id": "94991fea-d3ea-4905-acde-f0c07cd4910c",
+      "timestamp": 1507652351713,
+      "matched_rule_id": null,
+      "facts": {
+        "method": "GET",
+        "headers": {
+          "user-agent": "Mozilla/5.0",
+          "accept-language": "en-US,en;q=0.8,da;q=0.6"
+        },
+        "remote_ip": "8.8.8.8"
+      },
+      "action": {
+        "type": "redirect",
+        "params": {
+          "url": "https://gogle.com"
+        }
+      }
+    },
+    {
+      /*
+       * Visitor triggered a custom action via facts
+       * matching one of your defined rules
+       */
+      "id": "1f9c1b1c-3e9b-40c2-addf-0c7e69bce5f0",
+      "timestamp": 1507652351613,
+      "matched_rule_id": "unique-rule-1",
+      "facts": {
+        "method": "GET",
+        "headers": {
+          "user-agent": "Chrome/5.0"
+        },
+        "remote_ip": "1.2.3.4"
+      },
+      "action": {
+        "type": "respond",
+        "params": {
+          "body": "Hello, Dave"
+        }
+      }
+    },
+    {...},
+    {...},
+  ],
+  "paging": {
+    "previous": null,
+    "next": "https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd/visitors?after=94991fea-d3ea-4905-acde-f0c07cd4910c&limit=100"
+  }
+}
+```
+
+Retrieves a list of raw visitor data for link. No filters, spam or otherwise, applied. Results are always latest (timestamp) first.
+
+### HTTP Request
+
+`GET https://api.linkkit.io/v1/links/:id/visitors`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+id | The id of the link to retrieve
+
+### Query Parameters
+
+Parameter | Description
+--------- | -----------
+limit | number of items to return, default 100, max 1000
+after | return items after this id
+
 ## DELETE /links/:id
 
 ```shell
