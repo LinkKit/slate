@@ -235,12 +235,6 @@
                   <li>
                     <a href="#get-links-id-stats" class="toc-h2 toc-link" data-title="Links">GET /links/:id/stats</a>
                   </li>
-                  <li>
-                    <a href="#get-links-id-visitors" class="toc-h2 toc-link" data-title="Links">GET /links/:id/visitors</a>
-                  </li>
-                  <li>
-                    <a href="#delete-links-id" class="toc-h2 toc-link" data-title="Links">DELETE /links/:id</a>
-                  </li>
               </ul>
           </li>
           <li>
@@ -354,118 +348,6 @@
 <tr>
 <td>id</td>
 <td>The id of the link</td>
-</tr>
-</tbody></table>
-<h2 id='get-links-id-visitors'>GET /links/:id/visitors</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd/visitors"</span> <span class="se">\</span>
-  -u my_api_key:
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="err">/*</span><span class="w">
-        </span><span class="err">Visitor</span><span class="w"> </span><span class="err">that</span><span class="w"> </span><span class="err">triggered</span><span class="w"> </span><span class="err">default</span><span class="w"> </span><span class="err">action</span><span class="p">,</span><span class="w">
-        </span><span class="err">notice</span><span class="w"> </span><span class="err">no</span><span class="w"> </span><span class="err">matched_rule_id</span><span class="w">
-      </span><span class="err">*/</span><span class="w">
-      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"94991fea-d3ea-4905-acde-f0c07cd4910c"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1507652351713</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"matched_rule_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"facts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GET"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"headers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"user-agent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mozilla/5.0"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"accept-language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"en-US,en;q=0.8,da;q=0.6"</span><span class="w">
-        </span><span class="p">},</span><span class="w">
-        </span><span class="s2">"remote_ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8.8.8.8"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"redirect"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://gogle.com"</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="err">/*</span><span class="w">
-       </span><span class="err">*</span><span class="w"> </span><span class="err">Visitor</span><span class="w"> </span><span class="err">triggered</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">custom</span><span class="w"> </span><span class="err">action</span><span class="w"> </span><span class="err">via</span><span class="w"> </span><span class="err">facts</span><span class="w">
-       </span><span class="err">*</span><span class="w"> </span><span class="err">matching</span><span class="w"> </span><span class="err">one</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">your</span><span class="w"> </span><span class="err">defined</span><span class="w"> </span><span class="err">rules</span><span class="w">
-       </span><span class="err">*/</span><span class="w">
-      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1f9c1b1c-3e9b-40c2-addf-0c7e69bce5f0"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1507652351613</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"matched_rule_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unique-rule-1"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"facts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GET"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"headers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"user-agent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Chrome/5.0"</span><span class="w">
-        </span><span class="p">},</span><span class="w">
-        </span><span class="s2">"remote_ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.2.3.4"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"respond"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"body"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Hello, Dave"</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
-  </span><span class="p">],</span><span class="w">
-  </span><span class="s2">"paging"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"previous"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd/visitors?after=94991fea-d3ea-4905-acde-f0c07cd4910c&amp;limit=100"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Retrieves a list of raw visitor data for link. No filters, spam or otherwise, applied. Results are always latest (timestamp) first.</p>
-<h3 id='http-request-4'>HTTP Request</h3>
-<p><code>GET https://api.linkkit.io/v1/links/:id/visitors</code></p>
-<h3 id='url-parameters-3'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>The id of the link to retrieve</td>
-</tr>
-</tbody></table>
-<h3 id='query-parameters'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>limit</td>
-<td>number of items to return, default 100, max 1000</td>
-</tr>
-<tr>
-<td>after</td>
-<td>return items after this id</td>
-</tr>
-</tbody></table>
-<h2 id='delete-links-id'>DELETE /links/:id</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.linkkit.io/v1/links/3953276c-d9d8-47aa-a420-1019efecc5dd"</span> <span class="se">\</span>
-  -X DELETE <span class="se">\</span>
-  -u my_api_key:
-</code></pre>
-<p>This endpoint deletes a specified link.</p>
-<h3 id='http-request-5'>HTTP Request</h3>
-<p><code>DELETE https://api.linkkit.io/v1/links/:id</code></p>
-<h3 id='url-parameters-4'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>The id of the link to delete</td>
 </tr>
 </tbody></table>
 <h1 id='rules'>Rules</h1>
